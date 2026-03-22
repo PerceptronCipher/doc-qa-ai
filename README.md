@@ -106,4 +106,4 @@ Both services are deployed on Render.
 
 ## Author
 
-Built by [PerceptronCipher](https://github.com/PerceptronCipher)
+Built by [PerceptronCipher](https://github.com/PerceptronCipher) and [Hilostone](https://github.com/Hilosthone)

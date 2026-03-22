@@ -1,9 +1,18 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Send, Sparkles, Terminal, User, Cpu, AlertCircle } from 'lucide-react'
+import {
+  Send,
+  Sparkles,
+  Terminal,
+  User,
+  Cpu,
+  Loader2,
+  Globe,
+} from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { cn } from '@/src/lib/utils' 
+import ReactMarkdown from 'react-markdown'
+import { cn } from '@/src/lib/utils'
 
 interface Message {
   id: string
@@ -18,14 +27,12 @@ export default function ChatInterface({ fileActive }: { fileActive: boolean }) {
   const [isTyping, setIsTyping] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
-    }
-  }, [messages, isTyping])
+  // 1. Resolve Backend URL
+  const backendUrl =
+    process.env.NEXT_PUBLIC_BACKEND_URL || 'https://doc-qa-ai.onrender.com'
 
   const handleSend = async () => {
-    if (!input.trim() || !fileActive) return
+    if (!input.trim() || !fileActive || isTyping) return
 
     const userMsg: Message = {
       id: Date.now().toString(),
@@ -35,140 +42,98 @@ export default function ChatInterface({ fileActive }: { fileActive: boolean }) {
     }
 
     setMessages((prev) => [...prev, userMsg])
+    const currentInput = input
     setInput('')
     setIsTyping(true)
 
     try {
-      // Prepare the form data for FastAPI
+      // 2. Construct Multipart Form Data for FastAPI Form(...)
       const formData = new FormData()
-      formData.append('question', input)
+      formData.append('question', currentInput)
 
-      const response = await fetch('http://localhost:8000/ask', {
+      const response = await fetch(`${backendUrl}/ask`, {
         method: 'POST',
-        body: formData, // FastAPI Form(...) expects FormData
+        body: formData,
+        // Browser automatically sets Content-Type: multipart/form-data with boundary
       })
 
       const data = await response.json()
 
-      if (response.ok) {
-        const aiMsg: Message = {
+      if (!response.ok) throw new Error(data.error || 'Uplink Timeout')
+
+      setMessages((prev) => [
+        ...prev,
+        {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
           content: data.answer,
           timestamp: new Date(),
-        }
-        setMessages((prev) => [...prev, aiMsg])
-      } else {
-        throw new Error(data.error || 'Failed to fetch answer')
-      }
-    } catch (error) {
-      console.error('Chat Error:', error)
-      const errorMsg: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content:
-          'Error: Engine connection lost. Ensure the FastAPI backend is running on port 8000.',
-        timestamp: new Date(),
-      }
-      setMessages((prev) => [...prev, errorMsg])
+        },
+      ])
+    } catch (error: any) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now().toString(),
+          role: 'assistant',
+          content: `### ⨯ PROXY_ERROR\n**Target:** ${backendUrl}\n**Status:** Failed to reach neural core. Ensure the Render instance isn't "spun down" (cold start).`,
+          timestamp: new Date(),
+        },
+      ])
     } finally {
       setIsTyping(false)
     }
   }
 
   return (
-    <div className='flex flex-col h-full bg-slate-900/20 border-l border-slate-800 font-sans'>
-      {/* 1. Chat Header */}
-      <div className='p-4 border-b border-slate-800 bg-slate-900/40 flex items-center justify-between'>
-        <div className='flex items-center gap-2'>
-          <Sparkles className='w-4 h-4 text-[#ff4f00]' />
-          <span className='text-[10px] font-black uppercase tracking-widest text-slate-200'>
-            Intelligence_Stream
+    <div className='flex flex-col h-full bg-slate-950/20 border-l border-slate-800/40 font-sans relative'>
+      {/* Technical Header */}
+      <header className='p-4 border-b border-slate-800/60 bg-slate-900/40 backdrop-blur-xl flex items-center justify-between shrink-0 z-20'>
+        <div className='flex items-center gap-2.5'>
+          <Globe className='w-3.5 h-3.5 text-[#ff4f00] animate-pulse' />
+          <span className='text-[9px] font-black uppercase tracking-[0.25em] text-slate-200'>
+            Live_Edge_Node
           </span>
         </div>
-        <div className='flex gap-1'>
-          <div className='px-2 py-0.5 rounded-sm bg-slate-800 border border-slate-700 text-[8px] text-slate-500 font-mono'>
-            GPT-4o
-          </div>
+        <div className='flex items-center gap-2'>
+          <span className='text-[7px] font-mono text-slate-500'>STATUS:</span>
+          <span className='text-[8px] font-mono text-green-500 uppercase font-bold tracking-tighter'>
+            Connected_SSL
+          </span>
         </div>
-      </div>
+      </header>
 
-      {/* 2. Message Area */}
+      {/* Message Feed */}
       <div
         ref={scrollRef}
-        className='flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar'
+        className='flex-1 overflow-y-auto p-4 md:p-6 space-y-8 custom-scrollbar'
       >
-        {messages.length === 0 && (
-          <div className='h-full flex flex-col items-center justify-center opacity-20 text-center px-8'>
-            <Terminal className='w-8 h-8 mb-4' />
-            <p className='text-[10px] font-bold uppercase tracking-[0.2em]'>
-              {fileActive
-                ? 'Awaiting Command...'
-                : 'Upload Document to Initialize AI'}
-            </p>
-          </div>
-        )}
-
-        <AnimatePresence mode='popLayout'>
-          {messages.map((msg) => (
-            <motion.div
-              key={msg.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
+        {/* ... (Previous messages.map logic) ... */}
+        {messages.map((msg) => (
+          <motion.div
+            key={msg.id}
+            className={cn(
+              'flex gap-3 max-w-[92%]',
+              msg.role === 'user' ? 'ml-auto flex-row-reverse' : 'mr-auto',
+            )}
+          >
+            <div
               className={cn(
-                'flex gap-3 max-w-[90%]',
-                msg.role === 'user' ? 'ml-auto flex-row-reverse' : 'mr-auto',
+                'px-4 py-3 rounded-2xl text-[11px] prose prose-invert max-w-none ring-1 ring-inset',
+                msg.role === 'user'
+                  ? 'bg-slate-800/30 ring-slate-700/40'
+                  : 'bg-slate-900/50 ring-slate-800/80',
               )}
             >
-              <div
-                className={cn(
-                  'w-7 h-7 shrink-0 rounded flex items-center justify-center border transition-all',
-                  msg.role === 'user'
-                    ? 'bg-slate-800 border-slate-700'
-                    : 'bg-[#ff4f00] border-[#ff4f00]/50 shadow-[0_0_10px_rgba(255,79,0,0.2)]',
-                )}
-              >
-                {msg.role === 'user' ? (
-                  <User className='w-4 h-4 text-slate-400' />
-                ) : (
-                  <Cpu className='w-4 h-4 text-white' />
-                )}
-              </div>
-              <div
-                className={cn(
-                  'p-3 rounded-sm text-[11px] leading-relaxed font-medium shadow-sm whitespace-pre-wrap',
-                  msg.role === 'user'
-                    ? 'bg-slate-800 text-slate-200 border border-slate-700'
-                    : 'bg-slate-900 text-slate-300 border border-slate-800',
-                )}
-              >
-                {msg.content}
-              </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-
-        {isTyping && (
-          <div className='flex gap-3'>
-            <div className='w-7 h-7 bg-[#ff4f00] rounded flex items-center justify-center animate-pulse'>
-              <Cpu className='w-4 h-4 text-white' />
+              <ReactMarkdown>{msg.content}</ReactMarkdown>
             </div>
-            <div className='flex items-center gap-1 p-3'>
-              {[0, 150, 300].map((delay) => (
-                <span
-                  key={delay}
-                  className='w-1 h-1 bg-slate-500 rounded-full animate-bounce'
-                  style={{ animationDelay: `${delay}ms` }}
-                />
-              ))}
-            </div>
-          </div>
-        )}
+          </motion.div>
+        ))}
       </div>
 
-      {/* 3. Input Area */}
-      <div className='p-4 bg-slate-900/50 border-t border-slate-800'>
-        <div className='relative flex items-center'>
+      {/* Input Terminal */}
+      <footer className='p-4 bg-slate-950 border-t border-slate-800/40 shrink-0'>
+        <div className='relative max-w-4xl mx-auto'>
           <input
             type='text'
             disabled={!fileActive || isTyping}
@@ -177,31 +142,13 @@ export default function ChatInterface({ fileActive }: { fileActive: boolean }) {
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             placeholder={
               fileActive
-                ? 'Ask PerceptronCipher...'
-                : 'Please ingest a document first'
+                ? 'Uplink to Render core...'
+                : 'SOURCE_REQUIRED_FOR_UPLINK'
             }
-            className='w-full bg-slate-950 border border-slate-800 rounded-md py-3 px-4 pr-12 text-[11px] font-medium text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-[#ff4f00]/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed'
+            className='w-full bg-slate-900/40 border border-slate-800/60 rounded-xl py-3 px-5 text-[11.5px] font-mono text-slate-100 focus:ring-1 focus:ring-[#ff4f00]/30 transition-all'
           />
-          <button
-            onClick={handleSend}
-            disabled={!fileActive || !input.trim() || isTyping}
-            className='absolute right-2 p-2 text-slate-500 hover:text-[#ff4f00] disabled:opacity-0 transition-all'
-          >
-            <Send className='w-4 h-4' />
-          </button>
         </div>
-        <div className='mt-3 flex items-center justify-between px-1'>
-          <p className='text-[8px] text-slate-600 font-mono uppercase tracking-widest'>
-            Status: {fileActive ? 'Indexed' : 'Standby'}{' '}
-            <span className='mx-2'>|</span> Latency: {isTyping ? '...' : '24ms'}
-          </p>
-          {isTyping && (
-            <span className='text-[8px] text-[#ff4f00] font-bold uppercase animate-pulse'>
-              Processing_Vector_Search
-            </span>
-          )}
-        </div>
-      </div>
+      </footer>
     </div>
   )
 }

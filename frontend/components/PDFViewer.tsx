@@ -1,75 +1,95 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Viewer, Worker } from '@react-pdf-viewer/core'
-import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout'
-
-// Import styles
-import '@react-pdf-viewer/core/lib/styles/index.css'
-import '@react-pdf-viewer/default-layout/lib/styles/index.css'
+import { ShieldCheck, Activity, FileText } from 'lucide-react'
 
 interface PDFViewerProps {
-  file: File
+  file: File | null
 }
 
 export default function PDFViewer({ file }: PDFViewerProps) {
-  const [viewUrl, setViewUrl] = useState<string | null>(null)
-
-  // Initialize the default layout plugin (Toolbar, Sidebar, etc.)
-  const defaultLayoutPluginInstance = defaultLayoutPlugin()
+  const [url, setUrl] = useState<string | null>(null)
 
   useEffect(() => {
-    // Create a blob URL for the file object
-    const url = URL.createObjectURL(file)
-    setViewUrl(url)
+    if (!file) {
+      setUrl(null)
+      return
+    }
 
-    // Cleanup URL on unmount to prevent memory leaks
-    return () => URL.revokeObjectURL(url)
+    const objectUrl = URL.createObjectURL(file)
+    setUrl(objectUrl)
+
+    // Clean up memory when the file changes or component unmounts
+    return () => URL.revokeObjectURL(objectUrl)
   }, [file])
 
-  if (!viewUrl) return null
+  if (!file || !url) {
+    return <EmptyState active={!!file} />
+  }
 
   return (
-    <div className='h-full flex flex-col bg-[#020617]'>
-      {/* 1. PDF Header / Stats */}
-      <div className='px-6 py-3 border-b border-slate-800 flex justify-between items-center bg-slate-900/30'>
-        <div className='flex items-center gap-2'>
-          <span className='text-[9px] font-black text-[#ff4f00] uppercase tracking-widest'>
-            Render_Buffer
-          </span>
-          <span className='text-slate-600 text-[9px]'>|</span>
-          <span className='text-[9px] font-mono text-slate-400 truncate max-w-[200px]'>
-            {file.name}
+    <div className='h-full flex flex-col bg-[#020617] overflow-hidden font-sans relative border-l border-slate-800/30'>
+      {/* 1. Dashboard Header */}
+      <header className='px-4 lg:px-6 py-3 border-b border-slate-800/60 bg-slate-950/40 backdrop-blur-xl flex justify-between items-center shrink-0 z-10'>
+        <div className='flex items-center gap-4'>
+          <div className='flex items-center gap-2'>
+            <ShieldCheck size={12} className='text-[#ff4f00]' />
+            <span className='text-[9px] font-black text-slate-100 uppercase tracking-[0.25em]'>
+              Context_Frame
+            </span>
+          </div>
+          <div className='h-3 w-[1px] bg-slate-800' />
+          <span className='text-[9px] font-mono text-slate-500 truncate max-w-[200px] lg:max-w-[400px] tracking-tight'>
+            {file.name.toUpperCase()}
           </span>
         </div>
+        <div className='flex items-center gap-3 opacity-60'>
+          <Activity size={12} className='text-slate-700' />
+        </div>
+      </header>
+
+      {/* 2. Native PDF Workspace (No Canvas Dependencies) */}
+      <div className='flex-1 bg-[#020617] relative'>
+        <iframe
+          src={`${url}#view=FitH&toolbar=0&navpanes=0&scrollbar=0`}
+          className='w-full h-full border-none opacity-90 invert grayscale hue-rotate-180 contrast-125'
+          title='PDF_Stream'
+        />
+
+        {/* Subtle Overlay to match your dark theme UI */}
+        <div className='absolute inset-0 pointer-events-none border-t border-slate-800/20 shadow-[inset_0_0_100px_rgba(0,0,0,0.5)]' />
       </div>
 
-      {/* 2. PDF Viewer Container */}
-      <div className='flex-1 overflow-hidden rp-viewer-dark'>
-        <Worker workerUrl='https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js'>
-          <Viewer
-            fileUrl={viewUrl}
-            plugins={[defaultLayoutPluginInstance]}
-            theme='dark'
-          />
-        </Worker>
-      </div>
+      {/* 3. Footer Metadata */}
+      <footer className='px-4 py-2 border-t border-slate-900 bg-slate-950/80 flex justify-between items-center'>
+        <span className='text-[7px] font-mono text-slate-600 uppercase tracking-widest'>
+          Native_System_Render // No_External_Deps
+        </span>
+        <span className='text-[7px] font-mono text-[#ff4f00] animate-pulse uppercase'>
+          Live_Stream
+        </span>
+      </footer>
+    </div>
+  )
+}
 
-      {/* Custom CSS to force the 'Architect' Dark Mode on the plugin */}
-      <style jsx global>{`
-        .rp-viewer-dark {
-          --rpv-core__inner-container-background-color: #020617;
-          --rpv-core__viewer-container-background-color: #020617;
-          --rpv-default-layout__toolbar-background-color: #0f172a;
-          --rpv-default-layout__toolbar-border-bottom-color: #1e293b;
-          --rpv-core__textbox-background-color: #1e293b;
-          --rpv-core__textbox-color: #f8fafc;
-        }
-        /* Hide the default plugin sidebar to keep our 'Medium-Small' aesthetic */
-        .rpv-default-layout__sidebar {
-          display: none !important;
-        }
-      `}</style>
+function EmptyState({ active }: { active: boolean }) {
+  return (
+    <div className='h-full flex flex-col items-center justify-center bg-[#020617] text-center p-12'>
+      <div className='w-12 h-12 rounded-full bg-slate-900/50 flex items-center justify-center mb-6 border border-slate-800/50'>
+        <FileText
+          size={20}
+          className={active ? 'text-[#ff4f00] animate-pulse' : 'text-slate-800'}
+        />
+      </div>
+      <h3 className='text-[10px] font-black uppercase tracking-[0.4em] text-slate-600'>
+        {active ? 'Initializing_Buffer' : 'Awaiting_Source_Uplink'}
+      </h3>
+      <p className='mt-2 text-[8px] font-mono text-slate-700 uppercase tracking-tighter'>
+        {active
+          ? 'Routing file stream to native preview core...'
+          : 'Ready for document ingestion'}
+      </p>
     </div>
   )
 }

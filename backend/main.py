@@ -14,7 +14,10 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "https://code-review-ai-1-4r7y.onrender.com"
+    ],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -41,7 +44,7 @@ async def upload(request: Request, file: UploadFile = File(...)):
         return {"message": f"Document indexed with {len(chunks)} chunks"}
     except Exception as e:
         return {"error": f"Failed to process PDF: {str(e)}"}
-        
+    
 @app.post("/ask")
 @limiter.limit("20/minute")
 async def ask(request: Request, question: str = Form(...)):

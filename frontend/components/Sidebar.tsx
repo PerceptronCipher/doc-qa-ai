@@ -43,7 +43,8 @@ export default function Sidebar({ setFile, currentFile }: SidebarProps) {
       const backendUrl =
         process.env.NEXT_PUBLIC_BACKEND_URL || 'https://doc-qa-ai.onrender.com'
 
-      const response = await fetch(`${backendUrl}/upload`, {
+      // 2. Upload to FastAPI
+      const response = await fetch('https://doc-qa-ai.onrender.com/upload', {
         method: 'POST',
         body: formData,
       })

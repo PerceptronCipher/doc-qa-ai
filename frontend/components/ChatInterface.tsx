@@ -20,7 +20,7 @@ interface Message {
   content: string
   timestamp: Date
 }
-
+  
 export default function ChatInterface({ fileActive }: { fileActive: boolean }) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
@@ -51,7 +51,7 @@ export default function ChatInterface({ fileActive }: { fileActive: boolean }) {
       const formData = new FormData()
       formData.append('question', currentInput)
 
-      const response = await fetch(`${backendUrl}/ask`, {
+      const response = await fetch('https://doc-qa-ai.onrender.com/ask', {
         method: 'POST',
         body: formData,
         // Browser automatically sets Content-Type: multipart/form-data with boundary

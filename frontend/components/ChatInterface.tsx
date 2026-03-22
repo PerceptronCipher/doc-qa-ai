@@ -43,7 +43,7 @@ export default function ChatInterface({ fileActive }: { fileActive: boolean }) {
       const formData = new FormData()
       formData.append('question', input)
 
-      const response = await fetch('http://localhost:8002/ask', {
+      const response = await fetch('https://doc-qa-ai.onrender.com/ask', {
         method: 'POST',
         body: formData, // FastAPI Form(...) expects FormData
       })

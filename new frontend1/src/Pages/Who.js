@@ -3,7 +3,7 @@ import star from "../images/Star 1.png";
 function How() {
   return (
     <div className="who" id="who">
-      <div className="howHeading">How it works</div>
+      <div className="howHeading">Who is it for</div>
       <div className="howList">
         <div className="hl">
           <img src={star} />

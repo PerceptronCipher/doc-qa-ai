@@ -16,6 +16,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
+        "https://doc-qa-ai-3.onrender.com",
         "https://doc-qa-ai-1.onrender.com"
     ],
     allow_methods=["*"],

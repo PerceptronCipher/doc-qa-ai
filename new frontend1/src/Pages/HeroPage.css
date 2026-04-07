@@ -1,0 +1,78 @@
+.hero {
+  padding: 80px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-content h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin: 0;
+  color: #111827; 
+  line-height: 1.1;
+}
+
+.highlight {
+  color: #2563EB; 
+}
+
+.hero-description {
+  max-width: 650px;
+  margin: 25px auto;
+  color: #4b5563;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-transform: uppercase; 
+  letter-spacing: 0.5px;
+}
+
+.hero-btn {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 80px;
+}
+
+.upload-docs {
+  background-color: #2563EB;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.upload-docs a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.try-demo {
+  background-color: #4F6084; 
+  border: none;
+  padding: 12px 28px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.upload-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 10px;
+}
+
+.upload-header p {
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+}

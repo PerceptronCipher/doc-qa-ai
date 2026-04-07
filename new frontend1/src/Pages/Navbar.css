@@ -1,0 +1,132 @@
+.navbar-container {
+  /* Using your specified background color */
+  background: #4F6084; 
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+.navbar-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+}
+
+.logo img {
+  height: 42px;
+  object-fit: contain;
+}
+
+.nav-links a {
+  margin: 0 15px;
+  text-decoration: none;
+  /* White text looks better on the #4F6084 background */
+  color: rgba(255, 255, 255, 0.9); 
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #ffffff;
+}
+
+.nav-btn button {
+  /* Using your specified button color */
+  background: #2563EB; 
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.nav-btn button:hover {
+  background: #1d4ed8; /* Slightly darker blue for hover */
+  transform: translateY(-1px);
+}
+
+.nav-btn button:active {
+  transform: scale(0.96);
+}
+
+.nav-btn button a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* --- Hamburger Styles --- */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 6px;
+  padding: 5px;
+}
+
+.bar {
+  width: 26px;
+  height: 2px;
+  background-color: white; /* Visible against #4F6084 */
+  transition: 0.3s ease;
+  border-radius: 10px;
+}
+
+/* --- Mobile Menu Overlay --- */
+.mobile-menu {
+  display: flex;
+  flex-direction: column;
+  background: #4F6084;
+  padding: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 20px;
+  box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+}
+
+.mobile-menu a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mobile-cta {
+  background: #2563EB;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+/* --- Responsive Logic --- */
+@media (max-width: 1024px) {
+  .desktop-only {
+    display: none;
+  }
+  .hamburger {
+    display: flex;
+  }
+}
+
+/* --- Hamburger Animation to 'X' --- */
+.top-cross { 
+  transform: rotate(-45deg) translate(-5px, 6px); 
+}
+.mid-fade { 
+  opacity: 0; 
+  transform: translateX(-10px);
+}
+.bot-cross { 
+  transform: rotate(45deg) translate(-5px, -6px); 
+}

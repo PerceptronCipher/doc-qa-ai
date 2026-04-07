@@ -1,0 +1,244 @@
+/* --- Container & Layout --- */
+.paste-container {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  padding: 100px 20px;
+  background-color: #fafbfc; /* Subtle tech background */
+  min-height: 80vh;
+}
+
+.upload-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.upload-header h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: -0.025em;
+  margin-bottom: 12px;
+}
+
+.upload-header p {
+  color: #64748b;
+  font-size: 1.15rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* --- The Card Group (Grid for side-by-side on desktop) --- */
+.paste-card-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 40px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.paste-card {
+  background: #ffffff;
+  width: 100%;
+  padding: 40px;
+  border-radius: 28px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.paste-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e1;
+}
+
+/* --- Drag & Drop Box --- */
+.drop-box {
+  width: 100%;
+  border: 2px dashed #cbd5e1;
+  padding: 50px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  background-color: #f8fafc;
+  transition: all 0.3s ease;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.drop-box:hover, .drop-box.dragging {
+  border-color: #2563eb;
+  background-color: #f0f7ff;
+  border-style: solid;
+}
+
+.file-selected {
+  border-style: solid;
+  border-color: #10b981; /* Green for selected */
+  background-color: #f0fdf4;
+}
+
+.drop-icon {
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+
+.drop-box:hover .drop-icon {
+  transform: scale(1.1);
+}
+
+.drop-content p {
+  font-size: 1.05rem;
+  color: #334155;
+  font-weight: 500;
+}
+
+.drop-content small {
+  display: block;
+  margin-top: 8px;
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+/* --- Buttons --- */
+.btn-primary, .btn-secondary {
+  border: none;
+  padding: 16px 28px;
+  border-radius: 14px;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.btn-primary { background-color: #2563eb; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
+.btn-primary:hover:not(:disabled) { background-color: #1d4ed8; transform: translateY(-2px); }
+
+.btn-secondary { background-color: #334155; }
+.btn-secondary:hover:not(:disabled) { background-color: #1e293b; }
+
+.btn-primary:disabled, .btn-secondary:disabled {
+  background-color: #e2e8f0;
+  color: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* --- Ask Interface / Interaction States --- */
+.ask-interface {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.locked {
+  opacity: 0.4;
+  filter: grayscale(1);
+  pointer-events: none;
+  transform: scale(0.98);
+}
+
+.active {
+  opacity: 1;
+  filter: none;
+  transform: scale(1);
+}
+
+/* --- Status & Banners --- */
+.status-banner {
+  margin-top: 20px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: fadeIn 0.3s ease;
+}
+
+.status-banner.success {
+  background-color: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.status-banner.error {
+  background-color: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+/* --- Input & Answer --- */
+.textarea-wrapper {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+textarea {
+  width: 100%;
+  height: 140px;
+  padding: 20px;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: none;
+  transition: all 0.2s ease;
+}
+
+textarea:focus {
+  border-color: #2563eb;
+  background: #ffffff;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.answer-box {
+  margin-top: 30px;
+  background-color: #f1f5f9;
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  position: relative;
+}
+
+.answer-header {
+  font-weight: 800;
+  color: #2563eb;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 15px;
+}
+
+.answer-text {
+  color: #1e293b;
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+/* --- Animations & Responsive --- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 900px) {
+  .paste-card-group { grid-template-columns: 1fr; }
+  .upload-header h1 { font-size: 2.2rem; }
+}
+
+@media (max-width: 480px) {
+  .paste-container { padding: 60px 15px; }
+  .paste-card { padding: 25px; }
+}

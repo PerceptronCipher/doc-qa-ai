@@ -308,7 +308,7 @@ import { useState, useRef } from 'react'
 import { Upload, FileText, Send, CheckCircle2, AlertCircle } from 'lucide-react'
 import './Hi.css'
 
-const BACKEND_URL = 'https://doc-qa-ai-2.onrender.com'
+const BACKEND_URL = 'https://api-doc-qa.buildoninc.org'
 
 function Paste() {
   const [file, setFile] = useState(null)

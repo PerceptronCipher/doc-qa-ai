@@ -37,9 +37,9 @@ function Navbar() {
     <nav className='navbar-container'>
       <div className='navbar-main'>
         {/* Logo */}
-        <div className='logo'>
-         <h2>minimals</h2>
-        </div>
+        <div className='brand-logo'>
+            minimals
+          </div>
 
         {/* Desktop Links (Hidden on small screens via CSS) */}
         <div className='nav-links desktop-only'>

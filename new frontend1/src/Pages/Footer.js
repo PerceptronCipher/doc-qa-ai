@@ -1,9 +1,42 @@
+// import q from "../images/Q&A S.png";
+// import framei from "../images/Frame21.png";
+// import frame2 from "../images/Frame20.png";
+// import frame3 from "../images/Frame19.png";
 
+// function Footer() {
+//   return (
+//     <div className="footer">
+//       <div className="footer-left">
+//         <div>
+//           <img src={q} alt="Q&A S" />
+//         </div>
+//         <div>
+//           <img src={framei} />
+//           <img src={frame2} />
+//           <img src={frame3} />
+//         </div>
+//       </div>
+
+//       <div className="footer-container">
+//         <h1>Quick Links</h1>
+//         <a href="#">Features</a>
+//         <a href="#">Contact</a>
+//         <a href="#">AI optimizer</a>
+//         <div>@ BuildON Inc. All rights reserve.</div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default Footer;
 
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faXTwitter
+  faLinkedinIn,
+  faInstagram,
+  faXTwitter,
+  faGithub,
 } from '@fortawesome/free-brands-svg-icons'
 import './Footer.css'
 
@@ -16,13 +49,30 @@ function Footer() {
         {/* Left Section: Brand & Socials */}
         <div className='footer-brand'>
           <div className='brand-logo'>
-            minimals
+            Q&A <span>S</span>
           </div>
           <p className='brand-tagline'>Precision document intelligence.</p>
           <div className='social-links'>
-            
             <a
-              href='https://x.com/0xminimals?s=2'
+              href='https://linkedin.com'
+              aria-label='LinkedIn'
+              className='social-icon'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <FontAwesomeIcon icon={faLinkedinIn} />
+            </a>
+            <a
+              href='https://instagram.com'
+              aria-label='Instagram'
+              className='social-icon'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <FontAwesomeIcon icon={faInstagram} />
+            </a>
+            <a
+              href='https://x.com'
               aria-label='Twitter'
               className='social-icon'
               target='_blank'
@@ -30,7 +80,15 @@ function Footer() {
             >
               <FontAwesomeIcon icon={faXTwitter} />
             </a>
-            
+            <a
+              href='https://github.com'
+              aria-label='GitHub'
+              className='social-icon'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <FontAwesomeIcon icon={faGithub} />
+            </a>
           </div>
         </div>
 

@@ -8,6 +8,14 @@
   width: 100%;
 }
 
+
+.brand-logo {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0849d7;
+  letter-spacing: -0.5px;
+}
+
 .navbar-main {
   max-width: 1200px;
   margin: 0 auto;

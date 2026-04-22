@@ -49,30 +49,13 @@ function Footer() {
         {/* Left Section: Brand & Socials */}
         <div className='footer-brand'>
           <div className='brand-logo'>
-            Q&A <span>S</span>
+            minimals
           </div>
           <p className='brand-tagline'>Precision document intelligence.</p>
           <div className='social-links'>
+            
             <a
-              href='https://linkedin.com'
-              aria-label='LinkedIn'
-              className='social-icon'
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              <FontAwesomeIcon icon={faLinkedinIn} />
-            </a>
-            <a
-              href='https://instagram.com'
-              aria-label='Instagram'
-              className='social-icon'
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              <FontAwesomeIcon icon={faInstagram} />
-            </a>
-            <a
-              href='https://x.com'
+              href='https://x.com/0xminimals?s=2'
               aria-label='Twitter'
               className='social-icon'
               target='_blank'
@@ -80,15 +63,7 @@ function Footer() {
             >
               <FontAwesomeIcon icon={faXTwitter} />
             </a>
-            <a
-              href='https://github.com'
-              aria-label='GitHub'
-              className='social-icon'
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              <FontAwesomeIcon icon={faGithub} />
-            </a>
+            
           </div>
         </div>
 

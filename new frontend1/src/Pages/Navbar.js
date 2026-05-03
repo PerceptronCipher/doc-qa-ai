@@ -38,7 +38,7 @@ function Navbar() {
       <div className='navbar-main'>
         {/* Logo */}
         <div className='logo'>
-          <img src={q} alt='Logo' />
+          4pf
         </div>
 
         {/* Desktop Links (Hidden on small screens via CSS) */}

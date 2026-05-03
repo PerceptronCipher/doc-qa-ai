@@ -17,9 +17,11 @@
   padding: 15px 20px;
 }
 
-.logo img {
-  height: 42px;
-  object-fit: contain;
+.logo  {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0849d7;
+  letter-spacing: -0.5px;
 }
 
 .nav-links a {

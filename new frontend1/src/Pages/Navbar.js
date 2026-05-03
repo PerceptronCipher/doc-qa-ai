@@ -26,8 +26,9 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import q from '../images/Q&A Ss.png'
-import './Navbar.css' 
+import './Navbar.css'
+
+
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
 

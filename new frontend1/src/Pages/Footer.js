@@ -46,7 +46,7 @@ function Footer() {
         {/* Left Section: Brand & Socials */}
         <div className='footer-brand'>
           <div className='brand-logo'>
-            <span>4pf</span>
+            <span>Rader</span>
           </div>
           <p className='brand-tagline'>Precision document intelligence.</p>
           <div className='social-links'>

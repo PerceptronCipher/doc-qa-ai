@@ -52,7 +52,7 @@ function Footer() {
           <div className='social-links'>
 
             <a
-              href='https://x.com/4pfmystic'
+              href='https://x.com/raderr?s=21'
               aria-label='Twitter'
               className='social-icon'
               target='_blank'
